@@ -1,6 +1,9 @@
-namespace MaxBotNET.Objects.Types;
+using System.Text.Json.Serialization;
 
-public class UpdateType : IEquatable<UpdateType>
+namespace MaxBot.Objects.Types;
+
+[JsonConverter(typeof(BaseTypeConverter<UpdateType>))]
+public class UpdateType : BaseType<UpdateType>
 {
     public static readonly UpdateType MessageCreated = new UpdateType("message_created");
     public static readonly UpdateType MessageCallback = new UpdateType("message_callback");
@@ -18,42 +21,7 @@ public class UpdateType : IEquatable<UpdateType>
     public static readonly UpdateType BotStopped = new UpdateType("bot_stopped");
     public static readonly UpdateType ChatTitleChanged = new UpdateType("chat_title_changed");
     public static readonly UpdateType MessageChatCreated = new UpdateType("message_chat_created");
-
-    private readonly string _value;
-
-    private UpdateType(string value)
+    private UpdateType(string value) : base(value)
     {
-        _value = value;
-    }
-
-    public override string ToString()
-    {
-        return _value;
-    }
-
-    public override bool Equals(object obj)
-    {
-        return obj is UpdateType other && _value.Equals(other._value);
-    }
-
-    public bool Equals(UpdateType other)
-    {
-        return other != null && _value.Equals(other._value);
-    }
-
-    public override int GetHashCode()
-    {
-        return _value.GetHashCode();
-    }
-
-    public static bool operator ==(UpdateType left, UpdateType right)
-    {
-        if (left is null) return right is null;
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(UpdateType left, UpdateType right)
-    {
-        return !(left == right);
     }
 }

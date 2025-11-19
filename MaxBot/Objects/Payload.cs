@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 
 public class Payload
 {
@@ -8,8 +8,8 @@ public class Payload
     public int? PhotoId { get; set; }
 
     [JsonPropertyName("token")]
-    public string Token { get; set; }
+    public string Token { get; set; } = null!;
 
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = null!;
 }

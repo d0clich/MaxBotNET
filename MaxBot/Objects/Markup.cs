@@ -1,10 +1,11 @@
+using MaxBot.Objects.Types;
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 public class Markup
 {
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public MarkupType Type { get; set; } = null!;
 
     [JsonPropertyName("from")]
     public int? From { get; set; }

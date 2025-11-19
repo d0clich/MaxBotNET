@@ -1,17 +1,19 @@
+using MaxBot.Objects.Types;
+using MaxBot.Objects.Users;
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 public class Link
 {
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public MessageLinkType Type { get; set; } = null!;
 
     [JsonPropertyName("sender")]
-    public Sender Sender { get; set; }
+    public User Sender { get; set; } = null!;
 
     [JsonPropertyName("chat_id")]
     public int? ChatId { get; set; }
 
     [JsonPropertyName("message")]
-    public MessageBody Message { get; set; }
+    public MessageBody Message { get; set; } = null!;
 }

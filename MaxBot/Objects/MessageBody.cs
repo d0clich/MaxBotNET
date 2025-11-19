@@ -1,21 +1,21 @@
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 
 public class MessageBody
 {
     [JsonPropertyName("mid")]
-    public string Mid { get; set; }
+    public string Mid { get; set; } = null!;
 
     [JsonPropertyName("seq")]
     public int? Seq { get; set; }
 
     [JsonPropertyName("text")]
-    public string Text { get; set; }
+    public string Text { get; set; } = null!;
 
     [JsonPropertyName("attachments")]
-    public List<Attachment> Attachments { get; set; }
+    public IEnumerable<Attachment> Attachments { get; set; } = null!;
 
     [JsonPropertyName("markup")]
-    public List<Markup> Markup { get; set; }
+    public IEnumerable<Markup> Markup { get; set; } = null!;
 }

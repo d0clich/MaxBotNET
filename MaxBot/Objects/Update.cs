@@ -1,6 +1,8 @@
+using MaxBot.Objects.Types;
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+
+namespace MaxBot.Objects;
 public class Update
 {
     [JsonPropertyName("update_type")]
@@ -10,7 +12,7 @@ public class Update
     public int Timestamp { get; set; }
 
     [JsonPropertyName("message")]
-    public Message Message { get; set; }
+    public Message Message { get; set; } = null!;
 
     [JsonPropertyName("user_locale")]
     public string UserLocale { get; set; } = null!;

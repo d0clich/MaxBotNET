@@ -1,27 +1,28 @@
+using MaxBot.Objects.Users;
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 
 public class Message
 {
     [JsonPropertyName("sender")]
-    public Sender Sender { get; set; }
+    public User Sender { get; set; } = null!;
 
     [JsonPropertyName("recipient")]
-    public Recipient Recipient { get; set; }
+    public Recipient Recipient { get; set; } = null!;
 
     [JsonPropertyName("timestamp")]
     public int? Timestamp { get; set; }
 
     [JsonPropertyName("link")]
-    public Link Link { get; set; }
+    public Link Link { get; set; } = null!;
 
     [JsonPropertyName("body")]
-    public Body Body { get; set; }
+    public Body Body { get; set; } = null!;
 
     [JsonPropertyName("stat")]
-    public Stat Stat { get; set; }
+    public Stat Stat { get; set; } = null!;
 
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = null!;
 }

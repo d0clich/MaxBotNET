@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 
 public class Recipient
 {
@@ -8,7 +8,7 @@ public class Recipient
     public int? ChatId { get; set; }
 
     [JsonPropertyName("chat_type")]
-    public string ChatType { get; set; }
+    public string ChatType { get; set; } = null!;
 
     [JsonPropertyName("user_id")]
     public int? UserId { get; set; }

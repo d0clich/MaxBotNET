@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MaxBotNET.Objects;
+namespace MaxBot.Objects;
 public class Stat
 {
     [JsonPropertyName("views")]
