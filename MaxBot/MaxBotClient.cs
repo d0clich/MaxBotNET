@@ -3,7 +3,9 @@ using MaxBot.Models.Subscriptions.Http;
 using MaxBot.Objects;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
+using System;
 using System.Net.Http.Json;
+using System.Web;
 
 namespace MaxBot;
 
@@ -48,7 +50,7 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
 
     public async Task<BotInfo> GetMe(CancellationToken cts = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBot));
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
 
         var botInfo = await _httpClient.GetFromJsonAsync<BotInfo>("me", cts).ConfigureAwait(false);
 
@@ -59,7 +61,7 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
 
     public async Task<GetUpdatesResponse> GetUpdates(UpdateType[]? types = null, int? limit = null, int? timeout = null, int? marker = null, CancellationToken cts = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBot));
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
 
         var model = new UpdatesGet(types, limit, timeout, marker);
         var updates = await _httpClient.GetFromJsonAsync<GetUpdatesResponse>("updates",cts).ConfigureAwait(false);
@@ -67,11 +69,15 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
         return updates!;
     }
 
-    public async Task RemoveSubscription(CancellationToken cts = default)
+    public async Task RemoveSubscription(string url, CancellationToken cts = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBot));
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
+        if (url == null) throw new ArgumentNullException(nameof(url));
 
-        var response = await _httpClient.DeleteAsync("subscriptions",cts).ConfigureAwait(false);
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["url"] = url; 
+      
+        var response = await _httpClient.DeleteAsync($"subscriptions?{query}",cts).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
             throw new MaxBotException(await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
@@ -79,7 +85,7 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
 
     public async Task<Subscription[]?> GetSubscriptions(CancellationToken cts = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBot));
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
 
         var subscriptions = await _httpClient.GetFromJsonAsync<Subscription[]>("subscriptions", cts).ConfigureAwait(false);
 
@@ -88,7 +94,8 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
 
     public async Task Subscribe(string url, UpdateType[]? types = null, string? secret = null, CancellationToken cts = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBot));
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
+        if (url == null) throw new ArgumentNullException(nameof(url));
 
         var model = new SubscriptionsPost(url,types,secret);
         var response = await _httpClient.PostAsJsonAsync("subscriptions", model, cts).ConfigureAwait(false);

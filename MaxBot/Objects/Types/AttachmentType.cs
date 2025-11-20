@@ -3,7 +3,7 @@
 namespace MaxBot.Objects.Types;
 
 [JsonConverter(typeof(BaseTypeConverter<AttachmentType>))]
-public class AttachmentType : BaseType<AttachmentType>
+public class AttachmentType : BaseType<AttachmentType> 
 {
     public static readonly AttachmentType Image = new AttachmentType("image");
     public static readonly AttachmentType Video = new AttachmentType("video");
@@ -15,7 +15,7 @@ public class AttachmentType : BaseType<AttachmentType>
     public static readonly AttachmentType Share = new AttachmentType("share");
     public static readonly AttachmentType Location = new AttachmentType("location");
 
-    private AttachmentType(string value) : base(value)
+    protected AttachmentType(string value) : base(value)
     {
     }
 }
