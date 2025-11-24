@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace MaxBot.Models.Messages
 {
-    public class SendMessageRequest
+    internal class SendMessageRequest
     {
         [JsonPropertyName("text")]
         public string? Text { get; set; }
@@ -14,6 +14,7 @@ namespace MaxBot.Models.Messages
         public Link? Link { get; set; }
         [JsonPropertyName("notify")]
         public bool Notify = true;
-        public FormatType? FormatType { get; set; }
+        [JsonPropertyName("format")]
+        public FormatType? Format { get; set; }
     }
 }

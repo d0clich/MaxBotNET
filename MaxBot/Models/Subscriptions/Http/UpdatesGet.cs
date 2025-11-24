@@ -2,7 +2,7 @@
 
 namespace MaxBot.Models.Subscriptions.Http
 {
-    public class UpdatesGet
+    internal class UpdatesGet
     {
         public UpdatesGet(UpdateType[]? types = null, int? limit = null, int? timeout = null, int? marker = null)
         {
