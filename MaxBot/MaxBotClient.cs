@@ -9,6 +9,7 @@ using System.Web;
 using MaxBot.Models;
 using MaxBot.Models.Uploads;
 using MaxBot.Models.Messages;
+using MaxBot.Objects.Additional;
 
 namespace MaxBot;
 
@@ -80,7 +81,7 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
             Attachments = attachments,
             Link = link,
             Notify = notify,
-            FormatType = format
+            Format = format
         };
 
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
@@ -142,14 +143,14 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
         return botInfo;
     }
 
-    public async Task<GetUpdatesResponse> GetUpdates(UpdateType[]? types = null, int? limit = null, int? timeout = null, int? marker = null, CancellationToken cts = default)
+    public async Task<UpdatesWithMarker> GetUpdates(UpdateType[]? types = null, int? limit = null, int? timeout = null, int? marker = null, CancellationToken cts = default)
     {
         if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
 
         var model = new UpdatesGet(types, limit, timeout, marker);
         var updates = await _httpClient.GetFromJsonAsync<GetUpdatesResponse>("updates",cts).ConfigureAwait(false);
 
-        return updates!;
+        return new UpdatesWithMarker() { Marker = updates!.Marker, Updates = updates!.Updates};
     }
 
     public async Task RemoveSubscription(string url, CancellationToken cts = default)

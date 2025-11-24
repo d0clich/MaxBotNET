@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace MaxBot.Models
 {
-    public class SuccessResponse
+    internal class SuccessResponse
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
