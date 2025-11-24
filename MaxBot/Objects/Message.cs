@@ -12,7 +12,7 @@ public class Message
     public Recipient Recipient { get; set; } = null!;
 
     [JsonPropertyName("timestamp")]
-    public int? Timestamp { get; set; }
+    public long? Timestamp { get; set; }
 
     [JsonPropertyName("link")]
     public Link Link { get; set; } = null!;

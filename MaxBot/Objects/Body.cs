@@ -8,7 +8,7 @@ public class Body
     public string Mid { get; set; }
 
     [JsonPropertyName("seq")]
-    public int? Seq { get; set; }
+    public long? Seq { get; set; }
 
     [JsonPropertyName("text")]
     public string Text { get; set; }

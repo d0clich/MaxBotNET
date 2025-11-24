@@ -9,7 +9,7 @@ public class Update
     public UpdateType UpdateType { get; set; } = null!;
 
     [JsonPropertyName("timestamp")]
-    public int Timestamp { get; set; }
+    public long Timestamp { get; set; }
 
     [JsonPropertyName("message")]
     public Message Message { get; set; } = null!;

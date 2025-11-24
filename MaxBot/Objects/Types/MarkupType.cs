@@ -2,7 +2,7 @@
 
 namespace MaxBot.Objects.Types;
 
-[JsonConverter(typeof(BaseTypeConverter<AttachmentType>))]
+[JsonConverter(typeof(BaseTypeConverter<MarkupType>))]
 public class MarkupType: BaseType<MarkupType>
 {
     public static readonly MarkupType Strong = new MarkupType("strong");

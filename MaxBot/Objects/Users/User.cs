@@ -23,6 +23,6 @@ public class User
     public bool? IsBot { get; set; }
 
     [JsonPropertyName("last_activity_time")]
-    public int? LastActivityTime { get; set; }
+    public long? LastActivityTime { get; set; }
 }
 
