@@ -5,11 +5,13 @@ using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects.Types
 {
-    [JsonConverter(typeof(BaseTypeConverter<FormatType>))]
-    public class FormatType : BaseType<FormatType>
+    [JsonConverter(typeof(EnumConverter<FormatType>))]
+    public enum FormatType
     {
-        public static FormatType HTML = new FormatType("html");
-        public static FormatType Markdown = new FormatType("markdown");
-        private FormatType(string  format) : base(format) { }
+        [JsonPropertyValue("html")]
+        HTML,
+
+        [JsonPropertyValue("markdown")]
+        Markdown
     }
 }

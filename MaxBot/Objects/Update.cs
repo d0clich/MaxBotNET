@@ -6,7 +6,7 @@ namespace MaxBot.Objects;
 public class Update
 {
     [JsonPropertyName("update_type")]
-    public UpdateType UpdateType { get; set; } = null!;
+    public UpdateType UpdateType { get; set; }
 
     [JsonPropertyName("timestamp")]
     public long Timestamp { get; set; }

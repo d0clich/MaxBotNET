@@ -2,26 +2,54 @@ using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects.Types;
 
-[JsonConverter(typeof(BaseTypeConverter<UpdateType>))]
-public class UpdateType : BaseType<UpdateType>
+[JsonConverter(typeof(EnumConverter<UpdateType>))]
+public enum UpdateType
 {
-    public static readonly UpdateType MessageCreated = new UpdateType("message_created");
-    public static readonly UpdateType MessageCallback = new UpdateType("message_callback");
-    public static readonly UpdateType MessageEdited = new UpdateType("message_edited");
-    public static readonly UpdateType MessageRemoved = new UpdateType("message_removed");
-    public static readonly UpdateType BotAdded = new UpdateType("bot_added");
-    public static readonly UpdateType BotRemoved = new UpdateType("bot_removed");
-    public static readonly UpdateType DialogMuted = new UpdateType("dialog_muted");
-    public static readonly UpdateType DialogUnmuted = new UpdateType("dialog_unmuted");
-    public static readonly UpdateType DialogCleared = new UpdateType("dialog_cleared");
-    public static readonly UpdateType DialogRemoved = new UpdateType("dialog_removed");
-    public static readonly UpdateType UserAdded = new UpdateType("user_added");
-    public static readonly UpdateType UserRemoved = new UpdateType("user_removed");
-    public static readonly UpdateType BotStarted = new UpdateType("bot_started");
-    public static readonly UpdateType BotStopped = new UpdateType("bot_stopped");
-    public static readonly UpdateType ChatTitleChanged = new UpdateType("chat_title_changed");
-    public static readonly UpdateType MessageChatCreated = new UpdateType("message_chat_created");
-    private UpdateType(string value) : base(value)
-    {
-    }
+    [JsonPropertyValue("message_created")]
+    MessageCreated,
+
+    [JsonPropertyValue("message_callback")]
+    MessageCallback,
+
+    [JsonPropertyValue("message_edited")]
+    MessageEdited,
+
+    [JsonPropertyValue("message_removed")]
+    MessageRemoved,
+
+    [JsonPropertyValue("bot_added")]
+    BotAdded,
+
+    [JsonPropertyValue("bot_removed")]
+    BotRemoved,
+
+    [JsonPropertyValue("dialog_muted")]
+    DialogMuted,
+
+    [JsonPropertyValue("dialog_unmuted")]
+    DialogUnmuted,
+
+    [JsonPropertyValue("dialog_cleared")]
+    DialogCleared,
+
+    [JsonPropertyValue("dialog_removed")]
+    DialogRemoved,
+
+    [JsonPropertyValue("user_added")]
+    UserAdded,
+
+    [JsonPropertyValue("user_removed")]
+    UserRemoved,
+
+    [JsonPropertyValue("bot_started")]
+    BotStarted,
+
+    [JsonPropertyValue("bot_stopped")]
+    BotStopped,
+
+    [JsonPropertyValue("chat_title_changed")]
+    ChatTitleChanged,
+
+    [JsonPropertyValue("message_chat_created")]
+    MessageChatCreated
 }

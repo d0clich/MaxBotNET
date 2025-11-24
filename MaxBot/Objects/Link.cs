@@ -6,7 +6,7 @@ namespace MaxBot.Objects;
 public class Link
 {
     [JsonPropertyName("type")]
-    public MessageLinkType Type { get; set; } = null!;
+    public MessageLinkType Type { get; set; } 
 
     [JsonPropertyName("sender")]
     public User Sender { get; set; } = null!;

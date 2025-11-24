@@ -6,7 +6,7 @@ namespace MaxBot.Objects;
 public class Attachment
 {
     [JsonPropertyName("type")]
-    public AttachmentType Type { get; set; } = null!;
+    public AttachmentType Type { get; set; } 
 
     [JsonPropertyName("payload")]
     public Payload? Payload { get; set; }

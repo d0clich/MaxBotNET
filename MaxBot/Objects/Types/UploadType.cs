@@ -1,13 +1,19 @@
+using System.Text.Json.Serialization;
+
 namespace MaxBot.Objects.Types;
 
-public class UploadType: BaseType<UploadType>
+[JsonConverter(typeof(EnumConverter<UploadType>))]
+public enum UploadType
 {
-    public static readonly UploadType Image = new UploadType("image");
-    public static readonly UploadType Video = new UploadType("video");
-    public static readonly UploadType Audio = new UploadType("audio");
-    public static readonly UploadType File = new UploadType("file");
-    private UploadType(string type) : base(type)
-    {
+    [JsonPropertyValue("image")]
+    Image,
 
-    }
+    [JsonPropertyValue("video")]
+    Video,
+
+    [JsonPropertyValue("audio")]
+    Audio,
+
+    [JsonPropertyValue("file")]
+    File
 }

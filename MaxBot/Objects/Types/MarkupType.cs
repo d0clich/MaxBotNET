@@ -2,18 +2,27 @@
 
 namespace MaxBot.Objects.Types;
 
-[JsonConverter(typeof(BaseTypeConverter<MarkupType>))]
-public class MarkupType: BaseType<MarkupType>
+[JsonConverter(typeof(EnumConverter<MarkupType>))]
+public enum MarkupType
 {
-    public static readonly MarkupType Strong = new MarkupType("strong");
-    public static readonly MarkupType Emphasized = new MarkupType("emphasized");
-    public static readonly MarkupType Monospaced = new MarkupType("monospaced");
-    public static readonly MarkupType Link = new MarkupType("link");
-    public static readonly MarkupType Strikethrough = new MarkupType("strikethrough");
-    public static readonly MarkupType Underline = new MarkupType("underline");
-    public static readonly MarkupType UserMention = new MarkupType("user_mention");
+    [JsonPropertyValue("strong")]
+    Strong,
 
-    private MarkupType(string value) : base(value)
-    {
-    }
+    [JsonPropertyValue("emphasized")]
+    Emphasized,
+
+    [JsonPropertyValue("monospaced")]
+    Monospaced,
+
+    [JsonPropertyValue("link")]
+    Link,
+
+    [JsonPropertyValue("strikethrough")]
+    Strikethrough,
+
+    [JsonPropertyValue("underline")]
+    Underline,
+
+    [JsonPropertyValue("user_mention")]
+    UserMention
 }

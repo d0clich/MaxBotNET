@@ -2,13 +2,12 @@
 
 namespace MaxBot.Objects.Types;
 
-[JsonConverter(typeof(BaseTypeConverter<MessageLinkType>))]
-public class MessageLinkType: BaseType<MessageLinkType>
+[JsonConverter(typeof(EnumConverter<MessageLinkType>))]
+public enum MessageLinkType
 {
+    [JsonPropertyValue("forward")]
+    Forward,
 
-    public static readonly MessageLinkType Forward = new MessageLinkType("forward");
-    public static readonly MessageLinkType Reply = new MessageLinkType("Reply");
-
-    public MessageLinkType(string value) : base(value) { }
+    [JsonPropertyValue("reply")] // ← обрати внимание: "reply", а не "Reply"
+    Reply
 }
-
