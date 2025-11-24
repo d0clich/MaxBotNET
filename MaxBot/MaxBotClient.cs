@@ -8,6 +8,7 @@ using System.Net.Http.Json;
 using System.Web;
 using MaxBot.Models;
 using MaxBot.Models.Uploads;
+using MaxBot.Models.Messages;
 
 namespace MaxBot;
 
@@ -48,6 +49,51 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         Dispose();
+    }
+    
+    public async Task<Message?> SendMessage(
+        long? chatId = null, 
+        long? userId = null, 
+        long? disableLinkPreview = null, 
+        string? text = null, 
+        IEnumerable<Attachment>? attachments = null, 
+        Link? link = null, 
+        bool notify = true, 
+        FormatType? format = null,
+        CancellationToken cts = default)
+    {
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
+        if (chatId == null && userId == null) throw new ArgumentNullException("Both " + nameof(userId) + " and " + nameof(chatId) + " are null");
+
+        var parameters = HttpUtility.ParseQueryString(string.Empty);
+        
+        if (chatId != null)
+            parameters["chat_id"] = chatId.ToString();
+        if (userId != null)
+            parameters["user_id"] = userId.ToString();
+        if (disableLinkPreview != null)
+            parameters["disable_link_perview"] = disableLinkPreview.ToString();
+
+        var request = new SendMessageRequest()
+        {
+            Text = text,
+            Attachments = attachments,
+            Link = link,
+            Notify = notify,
+            FormatType = format
+        };
+
+        var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false);
+            throw new MaxBotException($"{response.StatusCode} Error while sending message: {errorMessage}");
+        }
+
+        var message = await response.Content.ReadFromJsonAsync<Message>(cts).ConfigureAwait(false);
+
+        return message;
     }
 
     //TODO: поддержка загрузки видео и аудио
@@ -114,10 +160,10 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["url"] = url; 
       
-        var response = await _httpClient.DeleteAsync($"subscriptions?{query}",cts).ConfigureAwait(false);
+        var response = await _httpClient.DeleteFromJsonAsync<SuccessResponse>($"subscriptions?{query}",cts).ConfigureAwait(false);
 
-        if (!response.IsSuccessStatusCode)
-            throw new MaxBotException(await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
+        if (response is not { Success:true})
+            throw new MaxBotException(response?.Message ?? "unknown error");
     }
 
     public async Task<Subscription[]?> GetSubscriptions(CancellationToken cts = default)
@@ -136,8 +182,9 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
 
         var model = new SubscriptionsPost(url,types,secret);
         var response = await _httpClient.PostAsJsonAsync("subscriptions", model, cts).ConfigureAwait(false);
-        
-        if (!response.IsSuccessStatusCode)
-            throw new MaxBotException(await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
+        var jsonResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>().ConfigureAwait(false);
+
+        if (jsonResponse is not { Success: true})
+            throw new MaxBotException(jsonResponse?.Message ?? "unknown error");
     }
 }
