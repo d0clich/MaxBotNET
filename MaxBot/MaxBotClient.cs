@@ -92,7 +92,7 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         if (userId != null)
             parameters["user_id"] = userId.ToString();
         if (disableLinkPreview != null)
-            parameters["disable_link_perview"] = disableLinkPreview.ToString();
+            parameters["disable_link_preview"] = disableLinkPreview.ToString();
 
         var request = new SendMessageRequest()
         {
