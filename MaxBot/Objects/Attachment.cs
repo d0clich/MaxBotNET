@@ -3,6 +3,7 @@ using MaxBot.Objects.Types;
 using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects;
+
 public class Attachment
 {
     [JsonPropertyName("type")]
@@ -15,4 +16,32 @@ public class Attachment
     public double? Latitude { get; set; }
     [JsonPropertyName("longitude")]
     public double? Longitude { get; set; }
+
+    public static Attachment CreateContact(
+            string name,
+            long? contactId = null,
+            string? vcfInfo = null,
+            string? vcfPhone = null
+            )
+    {
+        var contact = new ContactAttachmentRequestPayload
+        {
+            ContactId = contactId,
+            Name = name,
+            VcfInfo = vcfInfo,
+            VcfPhone = vcfPhone
+        };
+        return new Attachment() { Type = AttachmentType.Contact, Payload = contact };
+    }
+
+    public static Attachment CreatePhoto(string? token = null, string? url = null, string? photos = null)
+    {
+        var photo = new PhotoAttachmentRequestPayload()
+        {
+            Photos = photos,
+            Token = token,
+            Url = url,
+        };
+        return new Attachment() { Type = AttachmentType.Image, Payload = photo };
+    }
 }

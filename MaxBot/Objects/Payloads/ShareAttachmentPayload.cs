@@ -2,7 +2,7 @@
 
 namespace MaxBot.Objects.Payloads
 {
-    public class ShareAttachmentPayload
+    public class ShareAttachmentPayload: Payload
     {
         [JsonPropertyName("url")]
         public string? Url { get; set; }

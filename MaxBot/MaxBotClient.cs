@@ -10,6 +10,8 @@ using MaxBot.Models;
 using MaxBot.Models.Uploads;
 using MaxBot.Models.Messages;
 using MaxBot.Objects.Additional;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace MaxBot;
 
@@ -83,6 +85,8 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
             Notify = notify,
             Format = format
         };
+
+        Console.WriteLine(JsonSerializer.Serialize(request, new JsonSerializerOptions() { WriteIndented = true}));
 
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
 
