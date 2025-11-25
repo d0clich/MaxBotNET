@@ -8,7 +8,7 @@ public class MessageBody
     public string Mid { get; set; } = null!;
 
     [JsonPropertyName("seq")]
-    public int? Seq { get; set; }
+    public long? Seq { get; set; }
 
     [JsonPropertyName("text")]
     public string Text { get; set; } = null!;

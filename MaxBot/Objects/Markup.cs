@@ -8,8 +8,8 @@ public class Markup
     public MarkupType Type { get; set; }
 
     [JsonPropertyName("from")]
-    public int? From { get; set; }
+    public long? From { get; set; }
 
     [JsonPropertyName("length")]
-    public int? Length { get; set; }
+    public long? Length { get; set; }
 }

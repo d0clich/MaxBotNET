@@ -12,7 +12,7 @@ public class Link
     public User Sender { get; set; } = null!;
 
     [JsonPropertyName("chat_id")]
-    public int? ChatId { get; set; }
+    public long? ChatId { get; set; }
 
     [JsonPropertyName("message")]
     public MessageBody Message { get; set; } = null!;
