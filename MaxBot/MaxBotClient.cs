@@ -1,16 +1,9 @@
-﻿using MaxBot.Models.Subscriptions;
-using MaxBot.Models.Subscriptions.Http;
-using MaxBot.Objects;
+﻿using MaxBot.Objects;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
-using System;
 using System.Net.Http.Json;
 using System.Web;
-using MaxBot.Models;
-using MaxBot.Models.Uploads;
 using MaxBot.Models.Messages;
-using MaxBot.Objects.Additional;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 
 namespace MaxBot;

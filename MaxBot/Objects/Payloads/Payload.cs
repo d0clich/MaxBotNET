@@ -8,7 +8,7 @@ namespace MaxBot.Objects.Payloads;
 [JsonDerivedType(typeof(ShareAttachmentPayload))]
 [JsonDerivedType(typeof(StickerAttachmentRequestPayload))]
 [JsonDerivedType(typeof(UploadedInfoPayload))]
-public abstract class Payload
+public class Payload
 {
 
 }

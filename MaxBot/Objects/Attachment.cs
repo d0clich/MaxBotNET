@@ -44,4 +44,12 @@ public class Attachment
         };
         return new Attachment() { Type = AttachmentType.Image, Payload = photo };
     }
+    public static Attachment CreateUploadedInfo(string token)
+    {
+        var uploaded = new UploadedInfoPayload()
+        {
+            Token = token,
+        };
+        return new Attachment() {  Type = AttachmentType.File , Payload = uploaded };
+    }
 }

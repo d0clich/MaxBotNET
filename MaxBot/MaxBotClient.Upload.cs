@@ -1,5 +1,6 @@
 ﻿using MaxBot.Models.Uploads;
 using MaxBot.Objects.Types;
+using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -10,6 +11,7 @@ namespace MaxBot
 {
     public partial class MaxBotClient
     {
+        private static readonly FileExtensionContentTypeProvider provider = new();
         private async Task<string> UploadImage(string url, string fileName, Stream file, CancellationToken cts = default)
         {
             var content = new MultipartFormDataContent();
@@ -31,26 +33,38 @@ namespace MaxBot
         private async Task<string> UploadFile(string url, string fileName, Stream file, CancellationToken cts = default)
         {
             var content = new MultipartFormDataContent();
-            content.Add(new StreamContent(file), "data", fileName);
+
+            string contentType = "application/octet-stream";
+            if (provider.TryGetContentType(fileName, out string? mime))
+            {
+                contentType = mime;
+            }
+
+            var fileContent = new StreamContent(file);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+            content.Add(fileContent, "data", fileName);
 
             var response = await _httpClient.PostAsync(url, content, cts).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
-                throw new MaxBotException($"Upload image exception: {response.StatusCode} " + await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
+                throw new MaxBotException($"Upload file exception: {response.StatusCode} " + await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
 
-           var photos = await response.Content.ReadFromJsonAsync<UploadPhotosResponse>(cts).ConfigureAwait(false);
+           var token = await response.Content.ReadFromJsonAsync<UploadFileResponse>(cts).ConfigureAwait(false);
          
-            var photo = photos?.Photos?.FirstOrDefault();
-            if (photo == null || photo.HasValue == false || photo.Value.Value?.Token == null)
-                throw new MaxBotException($"Upload image exception: no photos in response");
+            if (token?.Token == null)
+                throw new MaxBotException($"Upload file exception: no token in response");
 
-            return photo.Value.Value.Token;
+            return token.Token;
         }
 
         public async Task<string> Upload(string fileName, Stream file, UploadType type, CancellationToken cts = default)
         {
             if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
-            if (type == UploadType.File || type == UploadType.Video || type == UploadType.Audio) throw new NotImplementedException();
-            if (file == null) throw new ArgumentNullException(nameof(file));
+            if (type == UploadType.Video || type == UploadType.Audio) throw new NotImplementedException();
+            if (file == null || fileName == null) throw new ArgumentNullException(nameof(file));
+
+            if (file.CanSeek)
+                file.Position = 0;
 
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters["type"] = type.ToString();
@@ -59,14 +73,15 @@ namespace MaxBot
             if (!uploadingUrlResponse.IsSuccessStatusCode)
                 throw new MaxBotException($"Get upload url exception: {uploadingUrlResponse.StatusCode} " + await uploadingUrlResponse.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
 
-            var url = await uploadingUrlResponse.Content.ReadFromJsonAsync<UploadsGetUrlResponse>().ConfigureAwait(false);
+            var urlResponse = await uploadingUrlResponse.Content.ReadFromJsonAsync<UploadsGetUrlResponse>().ConfigureAwait(false);
+            var url = urlResponse?.Url;
 
             if (url == null) throw new MaxBotException("Url to upload was null");
 
             if (type == UploadType.Image)
-                return await UploadImage(url.Url, fileName, file);
+                return await UploadImage(url, fileName, file, cts).ConfigureAwait(false);
             if (type == UploadType.File)
-                return await UploadFile(url.Url, fileName, file);
+                return await UploadFile(url, fileName, file, cts).ConfigureAwait(false);
 
             return "";
         }
