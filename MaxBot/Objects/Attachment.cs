@@ -8,10 +8,8 @@ public class Attachment
 {
     [JsonPropertyName("type")]
     public AttachmentType Type { get; set; } 
-
     [JsonPropertyName("payload")]
     public Payload? Payload { get; set; }
-
     [JsonPropertyName("latitude")]
     public double? Latitude { get; set; }
     [JsonPropertyName("longitude")]
@@ -44,6 +42,7 @@ public class Attachment
         };
         return new Attachment() { Type = AttachmentType.Image, Payload = photo };
     }
+
     public static Attachment CreateUploadedInfo(string token)
     {
         var uploaded = new UploadedInfoPayload()
