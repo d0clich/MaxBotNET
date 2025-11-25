@@ -15,7 +15,17 @@ namespace MaxBot
         private async Task<string> UploadImage(string url, string fileName, Stream file, CancellationToken cts = default)
         {
             var content = new MultipartFormDataContent();
-            content.Add(new StreamContent(file), "data", fileName);
+
+            string contentType = "application/octet-stream";
+            if (provider.TryGetContentType(fileName, out string? mime))
+            {
+                contentType = mime;
+            }
+
+            var fileContent = new StreamContent(file);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+            content.Add(fileContent, "data", fileName);
 
             var response = await _httpClient.PostAsync(url, content, cts).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
@@ -57,11 +67,20 @@ namespace MaxBot
             return token.Token;
         }
 
+        public async Task<string> Upload(string filePath, UploadType type, CancellationToken cts = default)
+        {
+            var stream = File.OpenRead(filePath);
+            var fileName = stream.Name;
+
+            return await Upload(fileName, stream, type, cts).ConfigureAwait(false);
+        }
+
         public async Task<string> Upload(string fileName, Stream file, UploadType type, CancellationToken cts = default)
         {
             if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
             if (type == UploadType.Video || type == UploadType.Audio) throw new NotImplementedException();
-            if (file == null || fileName == null) throw new ArgumentNullException(nameof(file));
+            if (file == null) throw new ArgumentNullException(nameof(file));
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
 
             if (file.CanSeek)
                 file.Position = 0;

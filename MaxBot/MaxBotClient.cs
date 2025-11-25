@@ -79,8 +79,6 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
             Format = format
         };
 
-        Console.WriteLine(JsonSerializer.Serialize(request, new JsonSerializerOptions() { WriteIndented = true}));
-
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
