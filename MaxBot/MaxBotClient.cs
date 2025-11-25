@@ -1,10 +1,12 @@
-﻿using MaxBot.Objects;
+﻿using MaxBot.Models;
+using MaxBot.Models.Messages;
+using MaxBot.Objects;
+using MaxBot.Objects.Additional;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
 using System.Net.Http.Json;
-using System.Web;
-using MaxBot.Models.Messages;
 using System.Text.Json;
+using System.Web;
 
 namespace MaxBot;
 
@@ -47,6 +49,28 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         Dispose();
     }
     
+    public async Task DeleteMessage(string messageId, CancellationToken cts = default)
+    {
+        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
+
+        var parameters = HttpUtility.ParseQueryString(string.Empty);
+        parameters["message_id"] = messageId.ToString();
+
+        var response = await _httpClient.DeleteAsync($"messages?{parameters}", cts).ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false);
+            throw new MaxBotException($"{response.StatusCode} Error while deleting message: {errorMessage}");
+        }
+
+        var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>(cts);
+        if (successResponse == null)
+            throw new MaxBotException("Response content is null");
+        if (!successResponse.Success)
+            throw new MaxBotException("Error while deleting message: " + successResponse.Message);
+    }
+
     public async Task<Message?> SendMessage(
         long? chatId = null, 
         long? userId = null, 
@@ -87,9 +111,11 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
             throw new MaxBotException($"{response.StatusCode} Error while sending message: {errorMessage}");
         }
 
-        var message = await response.Content.ReadFromJsonAsync<Message>(cts).ConfigureAwait(false);
+        var message = await response.Content.ReadFromJsonAsync<MessageWrapper>(cts).ConfigureAwait(false);
+        if (message?.Message == null)
+            throw new MaxBotException($"Empty message info");
 
-        return message;
+        return message.Message;
     }
     
     public async Task<BotInfo> GetMe(CancellationToken cts = default)

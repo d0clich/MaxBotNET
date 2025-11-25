@@ -15,5 +15,5 @@ public class Link
     public long? ChatId { get; set; }
 
     [JsonPropertyName("message")]
-    public MessageBody Message { get; set; } = null!;
+    public Body Message { get; set; } = null!;
 }
