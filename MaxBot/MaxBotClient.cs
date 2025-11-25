@@ -13,7 +13,7 @@ using MaxBot.Objects.Additional;
 
 namespace MaxBot;
 
-public class MaxBotClient : IDisposable, IAsyncDisposable
+public partial class MaxBotClient : IDisposable, IAsyncDisposable
 {
     private bool _disposed = false;
 
@@ -95,41 +95,6 @@ public class MaxBotClient : IDisposable, IAsyncDisposable
         var message = await response.Content.ReadFromJsonAsync<Message>(cts).ConfigureAwait(false);
 
         return message;
-    }
-
-    //TODO: поддержка загрузки видео и аудио
-    public async Task<string> UploadFile(Stream file, UploadType type, CancellationToken cts = default)
-    {
-        if (_disposed) throw new ObjectDisposedException(nameof(MaxBotClient));
-        if (type.ToString() == "video" || type.ToString() == "audio") throw new NotImplementedException();
-        if (file == null) throw new ArgumentNullException(nameof(file));
-        
-        var parameters = HttpUtility.ParseQueryString(string.Empty);
-        parameters["type"] = type.ToString();
-        
-        var uploadingUrlResponse = await _httpClient.PostAsync($"uploads?{parameters}", null, cts).ConfigureAwait(false);
-        if (!uploadingUrlResponse.IsSuccessStatusCode)
-            throw new MaxBotException(await uploadingUrlResponse.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
-        
-        var uploadingUrlJson = await uploadingUrlResponse.Content.ReadFromJsonAsync<UploadsGetUrlResponse>(cts).ConfigureAwait(false);
-        if (uploadingUrlJson == null || uploadingUrlJson.Url == null)
-            throw new MaxBotException(await uploadingUrlResponse.Content.ReadAsStringAsync(cts).ConfigureAwait(false)); 
-        
-        var url = uploadingUrlJson.Url;
-        
-        file.Position = 0;
-        var content = new MultipartFormDataContent();
-        content.Add(new StreamContent(file), "data");
-        
-        var tokenUrlResponse = await _httpClient.PostAsync(url, content, cts).ConfigureAwait(false);
-        if (!tokenUrlResponse.IsSuccessStatusCode)
-            throw new MaxBotException(await tokenUrlResponse.Content.ReadAsStringAsync(cts).ConfigureAwait(false));
-        
-        var tokenUrlJson = await tokenUrlResponse.Content.ReadFromJsonAsync<UploadsGetTokenResponse>(cts).ConfigureAwait(false);
-        if (tokenUrlJson == null || tokenUrlJson.Token == null)
-            throw new MaxBotException(await uploadingUrlResponse.Content.ReadAsStringAsync(cts).ConfigureAwait(false)); 
-        
-        return tokenUrlJson.Token;
     }
     
     public async Task<BotInfo> GetMe(CancellationToken cts = default)
