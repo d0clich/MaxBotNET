@@ -4,12 +4,28 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>MaxBotNET</PackageId>
+    <Version>0.1.0</Version>
+    <Title>MaxBotNET - MAX bot library</Title>
+    <Authors>d0clich (Buneev Ilya)</Authors>
+    <Description>Library for creating MAX bots</Description>
+    <PackageLicenseUrl>https://github.com/d0clich/MaxBotNET?tab=MIT-1-ov-file#readme</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/d0clich/MaxBotNET</RepositoryUrl>
+    <PackageIcon>ico.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ico.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

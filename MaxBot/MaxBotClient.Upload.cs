@@ -42,7 +42,7 @@ namespace MaxBot
 
         public async Task<string> Upload(string filePath, UploadType type, CancellationToken cts = default)
         {
-            var stream = File.OpenRead(filePath);
+            await using var stream = File.OpenRead(filePath);
             var fileName = stream.Name;
 
             return await Upload(fileName, stream, type, cts).ConfigureAwait(false);
@@ -57,7 +57,7 @@ namespace MaxBot
 
             if (file.CanSeek)
                 file.Position = 0;
-
+            
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters["type"] = type.ToString();
 
