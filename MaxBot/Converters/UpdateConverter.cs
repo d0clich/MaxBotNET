@@ -26,6 +26,10 @@ namespace MaxBot.Converters
                 UpdateType.MessageRemoved => root.Deserialize<MessageRemoved>(options),
                 UpdateType.BotAdded => root.Deserialize<BotAdded>(options),
                 UpdateType.BotRemoved => root.Deserialize<BotRemoved>(options),
+                UpdateType.BotStarted => root.Deserialize<BotStarted>(options),
+                UpdateType.BotStopped => root.Deserialize<BotStopped>(options),
+                UpdateType.ChatTitleChanged => root.Deserialize<ChatTitleChanged>(options),
+                UpdateType.MessageChatCreated => root.Deserialize<MessageChatCreated>(options),
                 _ => throw new JsonException($"Unsupported update_type: {updateType}")
             };
         }

@@ -15,11 +15,6 @@ public class Attachment
     [JsonPropertyName("longitude")]
     public double? Longitude { get; set; }
 
-    public IEnumerable<Attachment> ToEnum()
-    {
-        return [this];
-    }
-
     public static Attachment CreateContact(
             string name,
             long? contactId = null,

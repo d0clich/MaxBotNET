@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using MaxBot.Objects.Types;
 
 namespace MaxBot.Objects.Buttons
 {
@@ -8,6 +9,7 @@ namespace MaxBot.Objects.Buttons
         {
             Text = text;
             Url = url;
+            Type = ButtonType.Link;
         }
 
         [JsonPropertyName("text")]

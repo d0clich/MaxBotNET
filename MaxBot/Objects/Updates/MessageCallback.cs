@@ -6,7 +6,6 @@ namespace MaxBot.Objects.Updates
     {
         [JsonPropertyName("message")]
         public Message Message { get; set; } = null!;
-
         [JsonPropertyName("user_locale")]
         public string UserLocale { get; set; } = null!;
         [JsonPropertyName("callback")]

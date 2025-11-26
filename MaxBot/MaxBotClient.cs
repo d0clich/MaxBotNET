@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using System.Web;
 using MaxBot.Models;
 using MaxBot.Models.Messages;
@@ -95,7 +96,8 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
             Notify = notify,
             Format = format
         };
-
+        
+        Console.WriteLine(JsonSerializer.Serialize(request, new JsonSerializerOptions { WriteIndented = true }));
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
         await ThrowIfNotSuccessful(response, "sending", cts).ConfigureAwait(false);
 

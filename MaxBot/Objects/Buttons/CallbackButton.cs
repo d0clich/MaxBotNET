@@ -10,6 +10,7 @@ namespace MaxBot.Objects.Buttons
             Text = text;
             Payload = payload;
             Intent = intent;
+            Type = ButtonType.Callback;
         }
 
         [JsonPropertyName("text")]

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using MaxBot.Objects.Types;
 
 namespace MaxBot.Objects.Buttons
 {
@@ -7,6 +8,7 @@ namespace MaxBot.Objects.Buttons
         public MessageButton(string text)
         {
             Text = text;
+            Type = ButtonType.Message;
         }
 
         [JsonPropertyName("text")]
