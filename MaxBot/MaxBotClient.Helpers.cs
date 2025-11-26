@@ -7,7 +7,7 @@ namespace MaxBot
     {
         private static readonly FileExtensionContentTypeProvider provider = new();
 
-        private async Task ThrowIfNotSuccessful(HttpResponseMessage? message, string action, CancellationToken cts = default)
+        private static async Task ThrowIfNotSuccessful(HttpResponseMessage? message, string action, CancellationToken cts = default)
         {
             if (message is null)
                 throw new ArgumentNullException($"Http response message was null");
@@ -18,7 +18,7 @@ namespace MaxBot
             throw new MaxBotException($"{message.StatusCode} Error while {action}: {errorMessage}");
         }
 
-        private string GetContentType(string fileName)
+        private static string GetContentType(string fileName)
         {
             string contentType = "application/octet-stream";
             if (provider.TryGetContentType(fileName, out string? mime))
@@ -28,7 +28,7 @@ namespace MaxBot
             return contentType;
         }
 
-        private StreamContent GetStreamContent(string fileName, Stream file)
+        private static StreamContent GetStreamContent(string fileName, Stream file)
         {
             var fileContent = new StreamContent(file);
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(GetContentType(fileName));
