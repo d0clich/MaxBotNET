@@ -15,6 +15,11 @@ public class Attachment
     [JsonPropertyName("longitude")]
     public double? Longitude { get; set; }
 
+    public IEnumerable<Attachment> ToEnum()
+    {
+        return [this];
+    }
+
     public static Attachment CreateContact(
             string name,
             long? contactId = null,
@@ -50,5 +55,10 @@ public class Attachment
             Token = token,
         };
         return new Attachment() {  Type = AttachmentType.File , Payload = uploaded };
+    }
+
+    public static Attachment CreateButtons(InlineKeyboardAttachmentRequestPayload payload)
+    {
+        return new Attachment() { Type = AttachmentType.InlineKeyboard, Payload = payload };
     }
 }

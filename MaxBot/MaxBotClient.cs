@@ -1,6 +1,7 @@
 ﻿using MaxBot.Models;
 using MaxBot.Models.Messages;
 using MaxBot.Objects;
+using MaxBot.Objects.Payloads;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
 using System.Net.Http.Json;

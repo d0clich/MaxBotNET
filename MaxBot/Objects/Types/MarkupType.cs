@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MaxBot.Converters;
+using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects.Types;
 

@@ -3,7 +3,9 @@
 namespace MaxBot.Objects.Buttons
 {
     [JsonDerivedType(typeof(CallbackButton))]
-    public abstract class Button
+    [JsonDerivedType(typeof(MessageButton))]
+    [JsonDerivedType(typeof(LinkButton))]
+    public class Button
     {
 
     }

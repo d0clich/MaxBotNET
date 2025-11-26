@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using MaxBot.Attributes;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MaxBot.Objects.Types;
+namespace MaxBot.Converters;
 
 public class EnumConverter<T> : JsonConverter<T> where T : Enum
 {

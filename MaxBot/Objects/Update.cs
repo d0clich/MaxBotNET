@@ -1,8 +1,11 @@
+using MaxBot.Converters;
 using MaxBot.Objects.Types;
+using MaxBot.Objects.Updates;
 using System.Text.Json.Serialization;
 
-
 namespace MaxBot.Objects;
+
+[JsonConverter(typeof(UpdateConverter))]
 public class Update
 {
     [JsonPropertyName("update_type")]
@@ -11,9 +14,16 @@ public class Update
     [JsonPropertyName("timestamp")]
     public long Timestamp { get; set; }
 
-    [JsonPropertyName("message")]
-    public Message Message { get; set; } = null!;
-
-    [JsonPropertyName("user_locale")]
-    public string UserLocale { get; set; } = null!;
+    [JsonIgnore]
+    public MessageEdited? MessageEdited => this as MessageEdited;
+    [JsonIgnore]
+    public MessageRemoved? MessageRemoved => this as MessageRemoved;
+    [JsonIgnore]
+    public MessageCreated? MessageCreated => this as MessageCreated;
+    [JsonIgnore]
+    public MessageCallback? MessageCallback => this as MessageCallback;
+    [JsonIgnore]
+    public BotAdded? BotAdded => this as BotAdded;
+    [JsonIgnore]
+    public BotRemoved? BotRemoved => this as BotRemoved;
 }

@@ -1,4 +1,4 @@
-namespace MaxBot.Objects.Types;
+namespace MaxBot.Attributes;
 
 internal class JsonPropertyValueAttribute : Attribute
 {

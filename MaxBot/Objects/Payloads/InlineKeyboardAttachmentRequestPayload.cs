@@ -1,9 +1,27 @@
 ﻿using MaxBot.Objects.Buttons;
+using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects.Payloads
 {
-    public class InlineKeyboardAttachmentRequestPayload: Payload
+    public class InlineKeyboardAttachmentRequestPayload : Payload
     {
-        Button[,] Buttons { get; set; } = new Button[,] { };
+        [JsonPropertyName("buttons")]
+        public List<List<Button>> Buttons { get; set; } = new();
+
+        public void CreateRow()
+        {
+            var row = Buttons.LastOrDefault();
+            if (row == null || row.Count != 0)
+                Buttons.Add(new List<Button>());
+        }
+
+        public void AddButton(Button button)
+        {
+            var row = Buttons.LastOrDefault();
+            if (row == null)
+                throw new ArgumentNullException(nameof(row), "Create row before adding buttons");
+
+            row.Add(button);
+        }
     }
 }
