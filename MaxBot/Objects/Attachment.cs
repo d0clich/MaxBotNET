@@ -52,7 +52,7 @@ public class Attachment
         return new Attachment() {  Type = AttachmentType.File , Payload = uploaded };
     }
 
-    public static Attachment CreateButtons(InlineKeyboardAttachmentRequestPayload payload)
+    public static Attachment CreateButtons(InlineKeyboardPayload payload)
     {
         return new Attachment() { Type = AttachmentType.InlineKeyboard, Payload = payload };
     }

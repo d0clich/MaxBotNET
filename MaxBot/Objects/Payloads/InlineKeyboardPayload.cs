@@ -3,7 +3,7 @@ using MaxBot.Objects.Buttons;
 
 namespace MaxBot.Objects.Payloads
 {
-    public class InlineKeyboardAttachmentRequestPayload : Payload
+    public class InlineKeyboardPayload : Payload
     {
         [JsonPropertyName("buttons")]
         public List<List<Button>> Buttons { get; set; } = new();
