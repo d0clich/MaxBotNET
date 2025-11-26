@@ -68,12 +68,18 @@ while (true)
         {
             // Извлекаем данные о нажатой кнопке (включая payload — полезную нагрузку).
             var callback = update.MessageCallback.Callback;
-
+            
+            //Путь к изображению
+            string filePath = "/home/user/image.png";
             // Отправляем пользователю echo-сообщение с содержимым payload,
             // чтобы продемонстрировать, что обработка callback работает.
+            // дополнительно прикрепляем изображение с устройства
             await bot.SendMessage(
                 userId: callback.User.UserId,
-                text: callback.Payload  // Например: "payload_negative"
+                text: callback.Payload,  // Например: "payload_negative"
+                attachments: [
+                    Attachment.CreatePhoto(await bot.Upload(filePath, UploadType.Image))
+                ]
             );
         }
     }
