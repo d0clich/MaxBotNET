@@ -57,7 +57,7 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         parameters["message_id"] = messageId.ToString();
 
         var response = await _httpClient.DeleteAsync($"messages?{parameters}", cts).ConfigureAwait(false);
-        await ThrowIfNotSuccessful(response, "deleting").ConfigureAwait(false);
+        await ThrowIfNotSuccessful(response, "deleting", cts).ConfigureAwait(false);
 
         var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>(cts);
         if (successResponse == null)
@@ -99,7 +99,7 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         };
 
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
-        await ThrowIfNotSuccessful(response, "sending").ConfigureAwait(false);
+        await ThrowIfNotSuccessful(response, "sending", cts).ConfigureAwait(false);
 
         var message = await response.Content.ReadFromJsonAsync<MessageWrapper>(cts).ConfigureAwait(false);
         if (message?.Message == null)

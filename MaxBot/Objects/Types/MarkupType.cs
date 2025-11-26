@@ -1,5 +1,6 @@
 ﻿using MaxBot.Converters;
 using System.Text.Json.Serialization;
+using MaxBot.Attributes;
 
 namespace MaxBot.Objects.Types;
 

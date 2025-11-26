@@ -13,7 +13,7 @@ namespace MaxBot
             content.Add(GetStreamContent(fileName, file), "data", fileName);
 
             var response = await _httpClient.PostAsync(url, content, cts).ConfigureAwait(false);
-            await ThrowIfNotSuccessful(response, "uploading image").ConfigureAwait(false);
+            await ThrowIfNotSuccessful(response, "uploading image", cts).ConfigureAwait(false);
 
             var photos = await response.Content.ReadFromJsonAsync<UploadPhotosResponse>(cts).ConfigureAwait(false);
          
@@ -30,7 +30,7 @@ namespace MaxBot
             content.Add(GetStreamContent(fileName, file), "data", fileName);
 
             var response = await _httpClient.PostAsync(url, content, cts).ConfigureAwait(false);
-            await ThrowIfNotSuccessful(response, "uploading file").ConfigureAwait(false);
+            await ThrowIfNotSuccessful(response, "uploading file", cts).ConfigureAwait(false);
 
             var token = await response.Content.ReadFromJsonAsync<UploadFileResponse>(cts).ConfigureAwait(false);
          
@@ -62,9 +62,9 @@ namespace MaxBot
             parameters["type"] = type.ToString();
 
             var uploadingUrlResponse = await _httpClient.PostAsync($"uploads?{parameters}", null, cts).ConfigureAwait(false);
-            await ThrowIfNotSuccessful(uploadingUrlResponse, "getting uploading url").ConfigureAwait(false);
+            await ThrowIfNotSuccessful(uploadingUrlResponse, "getting uploading url", cts).ConfigureAwait(false);
 
-            var urlResponse = await uploadingUrlResponse.Content.ReadFromJsonAsync<UploadsGetUrlResponse>().ConfigureAwait(false);
+            var urlResponse = await uploadingUrlResponse.Content.ReadFromJsonAsync<UploadsGetUrlResponse>(cts).ConfigureAwait(false);
             var url = urlResponse?.Url;
 
             if (url == null) throw new MaxBotException("Url to upload was null");
