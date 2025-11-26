@@ -16,7 +16,7 @@
 
 ## Использование
 
-Пример простейшего бота, который на полученное сообщение отправляет ответ с клавиатурой. При нажатии на кнопку на этой клавиатуре отправляет её Payload пользователю в ответ
+Пример простейшего бота, который на полученное сообщение отправляет ответ с клавиатурой. При нажатии на кнопку на этой клавиатуре отправляет её Payload и изображения пользователю в ответ
 
 ```csharp
 // Создаём клиент бота с указанным токеном авторизации.
@@ -73,18 +73,18 @@ while (true)
             string filePath = "/home/user/image.png";
             // Отправляем пользователю echo-сообщение с содержимым payload,
             // чтобы продемонстрировать, что обработка callback работает.
-            // дополнительно прикрепляем изображение с устройства
+            // Прикремляем два изображения: одно, которое было загруженно с устройства, и второе по url
             await bot.SendMessage(
                 userId: callback.User.UserId,
                 text: callback.Payload,  // Например: "payload_negative"
                 attachments: [
-                    Attachment.CreatePhoto(await bot.Upload(filePath, UploadType.Image))
+                    Attachment.CreatePhoto(token: await bot.Upload(filePath, UploadType.Image)),
+                    Attachment.CreatePhoto(url: "https://example.org/image.png"),
                 ]
             );
         }
     }
 }
-
 ```
 
 ---
