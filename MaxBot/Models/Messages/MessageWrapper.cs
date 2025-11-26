@@ -1,9 +1,10 @@
-﻿using System;
+﻿using MaxBot.Objects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace MaxBot.Objects.Additional
+namespace MaxBot.Models.Messages
 {
     internal class MessageWrapper
     {

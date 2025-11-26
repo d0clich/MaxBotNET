@@ -1,7 +1,6 @@
 ﻿using MaxBot.Models;
 using MaxBot.Models.Messages;
 using MaxBot.Objects;
-using MaxBot.Objects.Additional;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
 using System.Net.Http.Json;
@@ -57,12 +56,7 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         parameters["message_id"] = messageId.ToString();
 
         var response = await _httpClient.DeleteAsync($"messages?{parameters}", cts).ConfigureAwait(false);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorMessage = await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false);
-            throw new MaxBotException($"{response.StatusCode} Error while deleting message: {errorMessage}");
-        }
+        await ThrowIfNotSuccessful(response, "deleting").ConfigureAwait(false);
 
         var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>(cts);
         if (successResponse == null)
@@ -104,12 +98,7 @@ public partial class MaxBotClient : IDisposable, IAsyncDisposable
         };
 
         var response = await _httpClient.PostAsJsonAsync($"messages?{parameters}", request, cts).ConfigureAwait(false);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorMessage = await response.Content.ReadAsStringAsync(cts).ConfigureAwait(false);
-            throw new MaxBotException($"{response.StatusCode} Error while sending message: {errorMessage}");
-        }
+        await ThrowIfNotSuccessful(response, "sending").ConfigureAwait(false);
 
         var message = await response.Content.ReadFromJsonAsync<MessageWrapper>(cts).ConfigureAwait(false);
         if (message?.Message == null)
