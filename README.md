@@ -16,25 +16,69 @@
 
 ## Использование
 
+Пример простейшего бота, который на полученное сообщение отправляет ответ с клавиатурой. При нажатии на кнопку на этой клавиатуре отправляет её Payload пользователю в ответ
+
 ```csharp
-using var client = new MaxBotClient("YOUR_BOT_TOKEN");
+// Создаём клиент бота с указанным токеном авторизации.
+// Токен выдаётся при регистрации бота в платформе MaxBot.
+MaxBotClient bot = new MaxBotClient(token);
 
-// Получить информацию о боте
-var bot = await client.GetMe();
+// Бесконечный цикл для постоянного опроса входящих обновлений (long polling).
+while (true)
+{
+    // Получаем пакет обновлений от сервера.
+    // Метод GetUpdates() возвращает объект, содержащий список событий (сообщений, нажатий кнопок и т.д.),
+    // произошедших с момента последнего вызова.
+    var updates = await bot.GetUpdates();
+    Console.WriteLine("test");
+    // Обрабатываем каждое обновление по отдельности.
+    foreach (var update in updates.Updates)
+    {
+        // --- Обработка нового входящего сообщения ---
+        if (update.MessageCreated is not null)
+        {
+            // Извлекаем данные нового сообщения.
+            var message = update.MessageCreated.Message;
 
-// Отправить сообщение пользователю
-await client.SendMessage(userId: 123456789, text: "Привет!");
+            // Создаём клавиатуру с inline-кнопками.
+            var buttons = new InlineKeyboardPayload();
 
-// Загрузить изображение
-using var stream = File.OpenRead("photo.jpg");
-var token = await client.UploadFile(stream, UploadType.image);
+            // Первая строка кнопок.
+            buttons.CreateRow();
+            // Добавляем две кнопки
+            buttons.AddButton(new CallbackButton("Testing negative", "payload_negative", CallbackButtonIntent.Negative));
+            buttons.AddButton(new CallbackButton("Testing positive", "payload_positive", CallbackButtonIntent.Positive));
 
-// Отправить с вложением
-await client.SendMessage(
-    userId: 123456789,
-    text: "Вот фото:",
-    attachments: new[] { new Attachment(token) }
-);
+            // Вторая строка кнопок.
+            buttons.CreateRow();
+            // Кнопка без указания Intent использует стиль по умолчанию.
+            buttons.AddButton(new CallbackButton("Testing default", "payload_default"));
+
+            // Отправляем ответное сообщение пользователю с прикреплённой клавиатурой.
+            // userId берётся из информации об отправителе исходного сообщения.
+            await bot.SendMessage(
+                userId: message.Sender.UserId,
+                text: "Test",
+                attachments: [Attachment.CreateButtons(buttons)]
+            );
+        }
+
+        // --- Обработка нажатия на callback-кнопку ---
+        if (update.MessageCallback is not null)
+        {
+            // Извлекаем данные о нажатой кнопке (включая payload — полезную нагрузку).
+            var callback = update.MessageCallback.Callback;
+
+            // Отправляем пользователю echo-сообщение с содержимым payload,
+            // чтобы продемонстрировать, что обработка callback работает.
+            await bot.SendMessage(
+                userId: callback.User.UserId,
+                text: callback.Payload  // Например: "payload_negative"
+            );
+        }
+    }
+}
+
 ```
 
 ---
