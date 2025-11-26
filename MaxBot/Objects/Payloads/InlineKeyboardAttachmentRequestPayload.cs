@@ -1,5 +1,5 @@
-﻿using MaxBot.Objects.Buttons;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using MaxBot.Objects.Buttons;
 
 namespace MaxBot.Objects.Payloads
 {

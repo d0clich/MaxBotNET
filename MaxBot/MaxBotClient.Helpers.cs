@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace MaxBot
 {

@@ -1,7 +1,7 @@
-﻿using MaxBot.Models.Uploads;
-using MaxBot.Objects.Types;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Web;
+using MaxBot.Models.Uploads;
+using MaxBot.Objects.Types;
 
 namespace MaxBot
 {

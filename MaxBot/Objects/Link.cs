@@ -1,6 +1,6 @@
+using System.Text.Json.Serialization;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Users;
-using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects;
 public class Link

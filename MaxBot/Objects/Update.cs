@@ -1,7 +1,7 @@
+using System.Text.Json.Serialization;
 using MaxBot.Converters;
 using MaxBot.Objects.Types;
 using MaxBot.Objects.Updates;
-using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects;
 

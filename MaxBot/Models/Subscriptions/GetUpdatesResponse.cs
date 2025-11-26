@@ -1,5 +1,5 @@
-﻿using MaxBot.Objects;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using MaxBot.Objects;
 
 namespace MaxBot.Models.Subscriptions
 {

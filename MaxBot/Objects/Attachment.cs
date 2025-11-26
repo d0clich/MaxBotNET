@@ -1,6 +1,6 @@
+using System.Text.Json.Serialization;
 using MaxBot.Objects.Payloads;
 using MaxBot.Objects.Types;
-using System.Text.Json.Serialization;
 
 namespace MaxBot.Objects;
 

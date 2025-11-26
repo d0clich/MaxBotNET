@@ -1,5 +1,5 @@
-using MaxBot.Objects.Types;
 using System.Text.Json.Serialization;
+using MaxBot.Objects.Types;
 
 namespace MaxBot.Objects;
 public class Markup

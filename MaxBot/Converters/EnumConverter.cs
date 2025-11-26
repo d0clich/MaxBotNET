@@ -1,8 +1,8 @@
-﻿using MaxBot.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MaxBot.Attributes;
 
 namespace MaxBot.Converters;
 
